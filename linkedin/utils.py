@@ -2,10 +2,6 @@
 import requests
 from .exceptions import LinkedInError, get_exception_for_error_code
 
-try:
-    from cStringIO import StringIO
-except ImportError:
-    from StringIO import StringIO
 
 try:
     import simplejson as json
@@ -31,20 +27,13 @@ def enum(enum_type='enum', base_classes=None, methods=None, **attrs):
         methods = {}
 
     base_classes = base_classes + (object,)
-    for k, v in methods.iteritems():
+    for k, v in methods.items():
         methods[k] = classmethod(v)
 
     attrs['enums'] = attrs.copy()
     methods.update(attrs)
     methods['__init__'] = __init__
     return type(enum_type, base_classes, methods)
-
-
-def to_utf8(st):
-    if isinstance(st, unicode):
-        return st.encode('utf-8')
-    else:
-        return bytes(st)
 
 
 def raise_for_error(response):
